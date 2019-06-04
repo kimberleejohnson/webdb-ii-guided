@@ -1,3 +1,17 @@
+const knex = require('knex')
+
+// Configuring knex
+const knexConfig = {
+    client: 'sqlite3',
+    connection: {
+        filename: './data/Rolex.db3'
+    }, 
+    useNullAsDefault: true, 
+}
+
+// Defining database
+const db = knex(knexConfig); 
+
 module.exports = {
     find, 
     findById, 
@@ -7,21 +21,28 @@ module.exports = {
 }
 
 function find() {
-    return null 
-}
+    return db('roles')
+};
 
 function findById(id) {
-    return null
+    return db('roles')
+    .where({ id })
+    .first(); 
 }
 
 function add(role) {
-    return null 
+    return db('roles')
+    .insert(role, 'id')
 }
 
 function update(id, changes) {
-    return null 
+    return db('roles')
+    .where({ id })
+    .update(changes); 
 } 
 
 function remove(id) {
-    return null 
+    return db('roles')
+    .where({ id })
+    .del(); 
 }
