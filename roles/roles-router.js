@@ -2,6 +2,9 @@ const knex = require('knex');
 
 const router = require('express').Router();
 
+// To import data 
+// const Roles = require('./roles/roles-model'); 
+
 // 1. npm install knex and driver 
 // 2. configure knex, after importing up above, and get a connection to database
 // 3. Configure knexConfig object
@@ -68,8 +71,20 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-  // remove roles (inactivate the role)
-  res.send('Write code to remove a role');
+  db('roles')
+  .where({ id: req.params.id})
+  .del()
+  .then(count => {
+    if(count > 0) {
+      const unit = count > 1 ? 'records' : 'record';
+      res.status(200).json({message: `${count} ${unit} deleted`})
+    } else {
+      res.status(404).json({ message: 'role not found'})
+    }
+  })
+  .catch(err => {
+    res.status(500).json(err)
+  })
 });
 
 
