@@ -12,6 +12,7 @@ const knexConfig = {
     filename: './data/Rolex.db3'
   },
   useNullAsDefault: true, // required only for sqlite3 
+  debug: true, 
 }
 
 const db = knex(knexConfig); 
