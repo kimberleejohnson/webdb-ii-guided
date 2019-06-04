@@ -49,13 +49,22 @@ router.post('/', (req, res) => {
     res.status(201).json(ids);
 
   }).catch(error => {
-    releaseEventss.status(500).json(error); 
+    res.status(500).json(error); 
   })
 });
 
 router.put('/:id', (req, res) => {
-  // update roles
-  res.send('Write code to modify a role');
+  // In SQL: Use put and where
+  const changes = req.body; 
+  db('roles').where({ id: req.params.id }).update(changes).then(count => {
+    if (count > 0) {
+      res.status(200).json({message: `${count} records updated`})
+    } else {
+      res.status(404).json({message: "Role not found, boo!"})
+    }
+  }).catch( error => {
+    res.status(500).json(error); 
+  })
 });
 
 router.delete('/:id', (req, res) => {
