@@ -27,10 +27,23 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-  // retrieve a role by id
-  res.send('Write code to retrieve a role by id');
+  // In SQL: select * from roles where id = 123 
+
+  db('roles').where({ id: req.params.id })
+  .first()
+  .then(role => {
+    // return 404 if record is not found 
+    if(role) {
+      res.status(200).json(role);
+    }else {
+      res.status(404).json({message: "Role not found, boo!"})
+    }
+  }).catch(error => {
+    res.status(500).json(error); 
+  })
 });
 
+// Always getting to get an array with the id of the last thing you inserted
 router.post('/', (req, res) => {
   db('roles').insert(req.body, 'id').then(ids => {
     res.status(201).json(ids);
@@ -49,5 +62,6 @@ router.delete('/:id', (req, res) => {
   // remove roles (inactivate the role)
   res.send('Write code to remove a role');
 });
+
 
 module.exports = router;
