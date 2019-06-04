@@ -31,8 +31,12 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  // add a role to the database
-  res.send('Write code to add a role');
+  db('roles').insert(req.body, 'id').then(ids => {
+    res.status(201).json(ids);
+
+  }).catch(error => {
+    releaseEventss.status(500).json(error); 
+  })
 });
 
 router.put('/:id', (req, res) => {
